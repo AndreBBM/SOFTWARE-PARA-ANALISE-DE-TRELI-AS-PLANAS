@@ -33,6 +33,7 @@ import numpy as np
 import xlrd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import math
 
 def plota(N,Inc):
     # Numero de membros
@@ -74,7 +75,8 @@ def importa(entradaNome):
     for c in range(nn):
         N[0,c] = nos.cell(c+1,0).value
         N[1,c] = nos.cell(c+1,1).value
-    
+
+    # print(N)
     ################################################## Ler a incidencia
     incid = arquivo.sheet_by_name('Incidencia')
     
@@ -90,6 +92,32 @@ def importa(entradaNome):
         Inc[c,2] = incid.cell(c+1,2).value
         Inc[c,3] = incid.cell(c+1,3).value
     
+    # Vetor com os comprimentos dos membros
+    L = np.zeros((nn,1))
+
+    for c in Inc:
+        n1 = int(c[0])
+        n2 = int(c[1])
+        L[n1-1,0] = np.sqrt((N[0,n2-1]-N[0,n1-1])**2+(N[1,n2-1]-N[1,n1-1])**2)
+    
+    # print(L)
+
+    angle = np.zeros((nm,1))
+    for c in range(nm):
+        x = int(Inc[c,0])
+        y = int(Inc[c,1])
+        angle[c,0] = math.atan2(N[1,y-1]-N[1,x-1],N[0,y-1]-N[0,x-1])
+
+    # print(angle)
+    
+    # Matriz de rotacao:
+
+    # c**2      cs      -c**2   -cs
+    # cs        s**2    -cs     -s**2
+    # -c**2     -cs     c**2    cs
+    # -cs       -s**2   cs      s**2
+
+
     ################################################## Ler as cargas
     carg = arquivo.sheet_by_name('Carregamento')
     
@@ -121,7 +149,7 @@ def importa(entradaNome):
         R[c,0] = GDL-1
 
 
-    return nn,N,nm,Inc,nc,F,nr,R
+    return nn,N,nm,Inc,nc,F,nr,R, L, angle
 
 def geraSaida(nome,Ft,Ut,Epsi,Fi,Ti):
     nome = nome + '.txt'
@@ -139,5 +167,6 @@ def geraSaida(nome,Ft,Ut,Epsi,Fi,Ti):
     f.close()
 
 
-[nn,N,nm,Inc,nc,F,nr,R] = importa('entrada.xlsx')
-plota(N,Inc)
+# [nn,N,nm,Inc,nc,F,nr,R, L, angle] = importa('entrada.xlsx')
+# plota(N,Inc)
+# geraSaida('teste',F,F,F,F,F)
