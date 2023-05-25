@@ -82,7 +82,7 @@ def importa(entradaNome):
     
     # Numero de membros
     nm = int(incid.cell(1,5).value)
-                 
+
     # Matriz de incidencia
     Inc = np.zeros((nm,4))
     
@@ -93,14 +93,15 @@ def importa(entradaNome):
         Inc[c,3] = incid.cell(c+1,3).value
     
     # Vetor com os comprimentos dos membros
-    L = np.zeros((nn,1))
-
-    for c in Inc:
+    L = np.zeros((nm,1))
+    print(N)
+    for count, c in enumerate(Inc):
         n1 = int(c[0])
         n2 = int(c[1])
-        L[n1-1,0] = np.sqrt((N[0,n2-1]-N[0,n1-1])**2+(N[1,n2-1]-N[1,n1-1])**2)
-    
-    # print(L)
+        L[count,0] = np.sqrt((N[0,n2-1]-N[0,n1-1])**2+(N[1,n2-1]-N[1,n1-1])**2)
+
+    print('\n\n')
+    print(L)
 
     angle = np.zeros((nm,1))
     for c in range(nm):
@@ -186,6 +187,6 @@ def gauss_seidel(A, b, x0, epsilon, max_iterations):
         x = x_new
     return x
 
-[nn,N,nm,Inc,nc,F,nr,R, L, angle] = importa('entrada.xlsx')
-# plota(N,Inc)
+[nn,N,nm,Inc,nc,F,nr,R, L, angle] = importa('entrada2.xlsx')
+plota(N,Inc)
 # geraSaida('teste',F,F,F,F,F)
