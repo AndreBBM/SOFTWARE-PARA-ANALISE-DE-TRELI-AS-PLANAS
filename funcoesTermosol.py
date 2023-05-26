@@ -94,29 +94,18 @@ def importa(entradaNome):
     
     # Vetor com os comprimentos dos membros
     L = np.zeros((nm,1))
-    print(N)
     for count, c in enumerate(Inc):
         n1 = int(c[0])
         n2 = int(c[1])
         L[count,0] = np.sqrt((N[0,n2-1]-N[0,n1-1])**2+(N[1,n2-1]-N[1,n1-1])**2)
 
-    print('\n\n')
-    print(L)
+
 
     angle = np.zeros((nm,1))
     for c in range(nm):
         x = int(Inc[c,0])
         y = int(Inc[c,1])
         angle[c,0] = math.atan2(N[1,y-1]-N[1,x-1],N[0,y-1]-N[0,x-1])
-
-    # print(angle)
-    
-    # Matriz de rotacao:
-
-    # c**2      cs      -c**2   -cs
-    # cs        s**2    -cs     -s**2
-    # -c**2     -cs     c**2    cs
-    # -cs       -s**2   cs      s**2
 
 
     ################################################## Ler as cargas
@@ -174,8 +163,6 @@ def gauss_seidel(A, b, x0, epsilon, max_iterations):
     n = len(A)
     x = x0.copy()
 
-    #Gauss-Seidal Method [By Bottom Science]
-
     for i in range(max_iterations):
         x_new = np.zeros(n)
         for j in range(n):
@@ -186,7 +173,3 @@ def gauss_seidel(A, b, x0, epsilon, max_iterations):
             return x_new
         x = x_new
     return x
-
-[nn,N,nm,Inc,nc,F,nr,R, L, angle] = importa('entrada2.xlsx')
-plota(N,Inc)
-# geraSaida('teste',F,F,F,F,F)
